@@ -894,10 +894,8 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 String textoMarcadorPosicionUsuario;
                 LatLng point1 = new LatLng(estaciones.elementAt(i).latitude, estaciones.elementAt(i).longitude);
                 textoMarcadorPosicionUsuario = "E-" + i + ",  " + point1.latitude + ",  " + point1.longitude;
-                BitmapDescriptor bit = bitmapDescriptorFromVector(getApplicationContext(), R.drawable.estacion);
                 mMap.addMarker(new MarkerOptions()
                         .position(point1)
-                        .icon(bit)
                         .title(textoMarcadorPosicionUsuario).flat(true));
                 //Coordenadas para centrar la camara en la ultima estacion, si es un poligono guardado
                 latCentrarPantalla = point1.latitude;
@@ -968,7 +966,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             String textoMarcadorPosicionUsuario = "E-" + Poligono.estaciones.size() + " -  " + point.latitude + ",  " + point.longitude;
             mMap.addMarker(new MarkerOptions()
                     .position(point)
-                    .icon(bitmapDescriptorFromVector(getApplicationContext(), R.drawable.estacion))
                     .title(textoMarcadorPosicionUsuario).flat(true));
             //Se agrega el punto a el vector estaciones
             estaciones.add(point);
@@ -984,7 +981,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             input.setTextColor(ColorStateList.valueOf(getColor(R.color.azul)));
             input.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.azul)));
             new AlertDialog.Builder(this, R.style.AlertDialogStyle)
-                    .setIcon(R.drawable.estacion)
                     .setTitle(getResources().getText(R.string.ingreso_de_punto)).setView(input)
                     .setMessage(getResources().getText(R.string.ingreso_de_punto_texto))
                     .setPositiveButton(getResources().getText(R.string.guardar), (dialog, which) -> {
