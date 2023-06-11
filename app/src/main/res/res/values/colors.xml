@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorBoton">#FFFFFF</color>
+    <color name="colorBotonFace">#FF0000</color>
+    <color name="colorFondo2">#333333</color>
+    <color name="colorFondo">#000000</color>
+    <color name="colorTexto">#FFFFFF</color>
+    <color name="colorTextoBoton">#000000</color>
+    <color name="colorGris">#999999</color>
+    <color name="colorRojo">#408080</color>
+    <color name="colorVerde">#00CC66</color>
+</resources>

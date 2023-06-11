@@ -1,0 +1,10 @@
+<resources>
+    <style name="AlertDialogStyle" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorAccent">@color/azul</item>
+        <item name="android:colorPrimary">@color/azul</item>
+        <item name="android:textColor">@color/azul</item>
+        <item name="android:background">#ffffff</item>
+
+
+    </style>
+</resources>

@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_ingreso_dist_az"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorFondo">
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="15dp"
+            android:background="@color/colorFondo2">
+
+            <com.google.android.gms.ads.AdView
+                android:id="@+id/adView13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                ads:adSize="SMART_BANNER"
+                ads:adUnitId="@string/id_banner"
+                android:layout_marginTop="11dp"
+                android:layout_below="@+id/relativeLayout"
+                android:layout_alignEnd="@+id/linearLayout21"></com.google.android.gms.ads.AdView>
+
+            <RelativeLayout
+                android:id="@+id/fondoTitulo"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_below="@+id/adView13"
+                android:layout_alignParentStart="true">
+
+
+                <com.desarrollojlcp.gps_topography.DXFView
+                    android:id="@+id/dxfView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="20dp"
+                    />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:id="@+id/linearLayout21"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginTop="6dp"
+
+                android:orientation="vertical"
+                android:textColor="@color/colorTexto"
+                android:layout_below="@+id/fondoTitulo"
+                android:layout_centerHorizontal="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@color/colorTexto"
+                android:orientation="horizontal"
+                android:layout_margin="3sp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="3sp"
+                android:background="@color/colorFondo">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50sp"
+                    android:layout_below="@+id/fondoTitulo"
+                    android:layout_margin="1dp"
+                    android:gravity="center"
+                    android:text="@string/ingreso_distaz_est"
+                    android:textSize="15sp" />
+            </LinearLayout>
+            </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="3sp"
+                    android:layout_weight="1"
+                    android:background="@color/colorTexto"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/ultimo_punto"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:background="@color/colorFondo"
+                            android:gravity="center">
+
+                            <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                                android:id="@+id/radio_grupo_ultimo"
+                                android:layout_width="fill_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:orientation="horizontal">
+
+                                <RadioButton
+                                    android:id="@+id/radio_si"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginRight="10dp"
+                                    android:buttonTint="@color/colorTexto"
+                                    android:text="@string/si"
+                                    android:textColor="@color/colorTexto" />
+
+                                <RadioButton
+                                    android:id="@+id/radio_no"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginLeft="10dp"
+                                    android:buttonTint="@color/colorTexto"
+                                    android:text="@string/no"
+                                    android:textColor="@color/colorTexto" />
+                            </RadioGroup>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/colorTexto"
+                    android:orientation="horizontal"
+                    android:layout_margin="3sp"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:id="@+id/textView6"
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/est_aparato"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:background="@color/colorTexto">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <TextView
+                                    android:id="@+id/estacion_aparato"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/colorTexto"
+                    android:orientation="horizontal"
+                    android:layout_margin="3sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo"
+                        >
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/punto_ob"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:background="@color/colorTexto">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <TextView
+                                    android:id="@+id/punto_observado"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:layout_margin="3sp"
+                    android:background="@color/colorTexto"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/distancia"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:background="@color/colorTexto">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <EditText
+                                    android:id="@+id/distancia_po"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:hint="0.00"
+                                    android:inputType="numberDecimal"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textColorHint="@color/colorGris"
+                                    android:textSize="18sp" />
+                            </LinearLayout>
+
+
+                        </LinearLayout>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:background="@color/colorTexto"
+                    android:orientation="horizontal"
+                    android:layout_margin="3sp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:layout_width="120dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center"
+                            android:text="@string/azimut"
+                            android:textSize="15sp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_margin="5dp"
+                            android:background="@color/colorTexto">
+
+                            <LinearLayout
+                                android:layout_width="39dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <EditText
+                                    android:id="@+id/azimut_grados"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:hint="0"
+                                    android:inputType="number"
+                                    android:maxLength="3"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textColorHint="@color/colorGris"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="30dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <EditText
+                                    android:id="@+id/azimut_minutos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:hint="0"
+                                    android:inputType="number"
+                                    android:maxLength="2"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textColorHint="@color/colorGris"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="50dp"
+                                android:layout_height="match_parent"
+                                android:layout_margin="3sp"
+                                android:background="@color/colorFondo">
+
+                                <EditText
+                                    android:id="@+id/azimut_segundos"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_margin="1dp"
+                                    android:background="@color/colorFondo"
+                                    android:gravity="center_vertical"
+                                    android:hint="0.00"
+                                    android:inputType="numberDecimal"
+                                    android:maxLength="5"
+                                    android:padding="2dp"
+                                    android:textColor="@color/colorTexto"
+                                    android:textColorHint="@color/colorGris"
+                                    android:textSize="18sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="5dp">
+
+
+                    <Button
+                        android:id="@+id/boton_siguiente"
+                        android:layout_width="150dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/colorBoton"
+                        android:text="@string/boton_siguiente"
+                        android:textColor="@color/colorTextoBoton"
+                        android:textSize="11sp" />
+
+
+                    <Button
+                        android:id="@+id/boton_cancelar_datodistaz"
+                        android:layout_width="80dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:layout_marginStart="20sp"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/colorBoton"
+                        android:text="@string/cancelar1"
+                        android:textColor="@color/colorTextoBoton"
+                        android:textSize="14sp" />
+
+
+                </LinearLayout>
+
+
+            </LinearLayout>
+
+
+
+
+
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>

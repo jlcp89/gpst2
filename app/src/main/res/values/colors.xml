@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+
+    <color name="colorFondoSpinner">#039e9e</color>
+
+    <color name="colorFondoVistaTrabajo">#FFFFFF</color>
+    <color name="colorBlanco">#ffffff</color>
+    <color name="colorBotonInactivo">#232326</color>
+    <color name="colorCarga">#fc9803</color>
+    <color name="colorDes">#03400c</color>
+    <color name="colorHint">#7d7d7d</color>
+    <color name="colorRun">#105FA8</color>
+    <color name="colorLineas1M">#7d7d7d</color>
+    <color name="colorLineas5M">#3440fa</color>
+    <color name="colorEje">#ffffff</color>
+    <color name="colorBotonesFAB">#fc9803</color>
+    <color name="colorBoton">#ffffff</color>
+    <color name="azul">#105FA8</color>
+    <color name="colorGris">#105FA8</color>
+
+
+
+
+    <!--
+    <color name="colorFondoVistaTrabajo">#000000</color>
+    <color name="colorTexto">#000000</color>
+    <color name="colorBlanco">#ffffff</color>
+    <color name="colorBotonInactivo">#232326</color>
+    <color name="colorNegro">#000000</color>
+    <color name="colorCarga">#fc9803</color>
+    <color name="colorDes">#03400c</color>
+    <color name="colorHint">#7d7d7d</color>
+    <color name="colorRun">#ff0000</color>
+    <color name="colorLineas1M">#7d7d7d</color>
+    <color name="colorLineas5M">#3440fa</color>
+    <color name="colorEje">#ffffff</color>
+    <color name="colorBotonesFAB">#fc9803</color>
+    <color name="colorBoton">#ffffff</color>
+    <color name="colorGris">#7d7d7d</color>
+    -->
+
+</resources>

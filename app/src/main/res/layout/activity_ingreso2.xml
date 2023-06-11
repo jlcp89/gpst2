@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Ingreso">
+
+    <RelativeLayout
+        android:id="@+id/relativeL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorFondoVistaTrabajo"
+        android:gravity="center">
+
+        <RelativeLayout
+            android:id="@+id/relativeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorFondoVistaTrabajo"
+            android:gravity="center"
+            android:layout_alignParentStart="true"
+            >
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/toolbar"/>
+        </RelativeLayout>
+
+
+
+
+        <RelativeLayout
+            android:id="@+id/relativeTrabajo"
+            android:layout_below="@+id/relativeToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/colorFondoVistaTrabajo"
+            android:gravity="center"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp"
+            >
+
+
+
+
+            <com.desarrollojlcp.gps_topography.VistaTrabajo
+                android:id="@+id/vista_trabajo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_info"
+                app:fabSize="mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/info"
+                app:backgroundTint="@color/colorRun"
+                android:visibility="invisible"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_compartir"
+                app:fabSize="mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/compartir"
+                app:backgroundTint="@color/colorBlanco"
+                android:layout_toLeftOf="@+id/boton_info"
+                android:layout_alignParentTop="true"
+                android:visibility="invisible"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_pro"
+                app:fabSize="mini"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="5dp"
+                android:src="@drawable/pro"
+                app:backgroundTint="@color/colorRun"
+                android:layout_below="@+id/boton_compartir"
+                android:visibility="invisible"/>
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_recalcular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="11dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/map"
+                app:backgroundTint="@color/colorBlanco"
+                app:fabSize="mini"
+                android:visibility="invisible"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_guardar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/guardar"
+                app:backgroundTint="@color/colorRun"
+                app:fabSize="mini"
+                android:layout_toRightOf="@+id/boton_recalcular"
+                android:visibility="invisible"
+                />
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_cargar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginStart="5dp"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:src="@drawable/cargar"
+                app:backgroundTint="@color/colorRun"
+                app:fabSize="mini"
+                android:layout_toRightOf="@+id/boton_guardar"
+                android:visibility="invisible"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_undo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/undo"
+                app:backgroundTint="@color/azul"
+                android:tint="@color/colorPrimary"
+                ads:fabSize="mini"
+                />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_agregar_punto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/boton_undo"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/punto"
+                ads:backgroundTint="@color/azul"
+                android:tint="@color/colorPrimary"
+                ads:fabSize="mini"
+                />
+
+
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_centrar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_above="@+id/boton_analizar"
+                android:layout_marginRight="15dp"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/centrar2"
+                app:backgroundTint="@color/azul"
+                android:tint="@color/colorPrimary"
+                app:fabSize="mini"/>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/boton_analizar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_gravity="end|bottom"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/run"
+                app:backgroundTint="@color/colorRun"
+                android:tint="@color/colorPrimary"/>
+
+        </RelativeLayout>
+
+
+
+
+
+
+        <!--
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/boton_guardar_marco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/prueba7" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/boton_cargar_marco"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@+id/boton_guardar_marco"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="5dp"
+            android:src="@drawable/prueba6" />
+         -->
+
+
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

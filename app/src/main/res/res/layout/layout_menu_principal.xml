@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ads="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/activity_menu_principal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/colorFondo2"
+    >
+
+    <Button
+        android:id="@+id/buttonDesa"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:background="#1859BA"
+        android:text="@string/instrucciones"
+        android:textColor="#FFFFFF"
+        android:textSize="12dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center">
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:gravity="center">
+
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/adView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    ads:adSize="SMART_BANNER"
+                    ads:adUnitId="@string/id_banner"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginBottom="56dp" />
+
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorTexto">
+
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="100dp"
+                            android:layout_height="match_parent"
+                            android:layout_margin="3sp"
+                            android:background="@color/colorFondo"
+                            android:gravity="left"
+                            android:text="@string/fecha"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:id="@+id/fecha_ingreso_datos"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorFondo"
+                            android:gravity="center_vertical"
+                            android:padding="2dp"
+                            android:textColor="@color/colorTexto" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="5dp"
+                    android:background="@color/colorTexto">
+
+                    <LinearLayout
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <TextView
+                            android:id="@+id/textView5"
+                            android:layout_width="104dp"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="clip_vertical"
+                            android:layout_margin="0sp"
+
+                            android:background="@color/colorFondo"
+                            android:gravity="left"
+                            android:text="@string/proyecto"
+                            android:textColor="@color/colorTexto"
+                            android:textSize="15sp" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/colorFondo">
+
+                        <EditText
+                            android:id="@+id/nombre_proyecto"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/colorFondo"
+                            android:gravity="center_vertical"
+                            android:hint="@string/proyecto_hint"
+                            android:inputType="text"
+                            android:padding="2dp"
+                            android:textColor="@color/colorTexto"
+                            android:textColorHint="@color/colorGris" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:weightSum="1"
+                android:layout_weight="0.33">
+
+                <Button
+                    android:id="@+id/boton_ingreso_gps2"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorBoton"
+                    android:text="@string/ingreso_gps2"
+                    android:textColor="@color/colorTextoBoton"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/boton_ingreso_gps"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorBoton"
+                    android:text="@string/ingreso_gps"
+                    android:textColor="@color/colorTextoBoton"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/boton_ingreso_inicial"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorBoton"
+                    android:text="@string/ingresar_poligono"
+                    android:textColor="@color/colorTextoBoton"
+                    android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/boton_salida_inicial"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/colorBoton"
+                    android:text="@string/salir"
+                    android:textColor="@color/colorTextoBoton"
+                    android:textSize="18sp" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:gravity="center_horizontal">
+
+            <Button
+                android:id="@+id/botonXela"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="www.d3sarrollo.com"
+                android:background="@color/colorFondo2"
+                />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_horizontal">
+
+                <Button
+                    android:id="@+id/botonPoliticaPrivacidad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="@string/politica_privacidad"
+                    android:background="@color/colorFondo2"
+                    />
+            </LinearLayout>
+
+
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

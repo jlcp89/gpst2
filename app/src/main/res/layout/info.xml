@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Info">
+
+    <ScrollView
+        android:id="@+id/ScrollView01"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:id="@+id/relativeL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            >
+
+            <LinearLayout
+                android:id="@+id/linear_titulo"
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:layout_gravity="center_vertical"
+                android:layout_margin="3sp"
+                android:background="@color/colorRun"
+                android:orientation="horizontal"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5sp"
+                    android:background="@color/azul">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="3sp"
+                        android:background="@color/azul"
+                        android:orientation="horizontal">
+                        <ImageView
+                            android:id="@+id/logod3"
+                            android:layout_width="59dp"
+                            android:layout_height="59dp"
+                            android:src="@mipmap/ic_launcher"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentLeft="true"
+                            ></ImageView>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_gravity=""
+                            android:layout_marginStart="10dp"
+                            android:gravity="center"
+                            android:text="@string/nombre_entrada"
+                            android:textColor="@color/colorBlanco"
+                            android:textSize="25dp"
+                            android:textStyle="bold" />
+
+
+                    </LinearLayout>
+
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/linear_manual"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/linear_titulo"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginStart="3sp"
+                android:layout_marginTop="3sp"
+                android:layout_marginEnd="3sp"
+                android:layout_marginBottom="3sp"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/boton_manual_usuario"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="50dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/manual"
+                    android:textColor="@color/azul"
+                    android:textSize="25dp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/boton_encuesta"
+                    android:layout_width="300dp"
+                    android:layout_height="0dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="@string/texto_boton_encuesta"
+                    android:textColor="@color/azul"
+                    android:textSize="15sp" />
+
+                <Button
+                    android:id="@+id/boton_rate"
+                    android:layout_width="300dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:backgroundTint="@color/colorPrimary"
+                    android:text="rate app on Google Play"
+                    android:textColor="@color/quantum_lime900"
+                    android:textSize="15sp"
+
+                    />
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity=""
+                    android:layout_marginTop="20dp"
+                    android:gravity="center"
+                    android:text="@string/gpst_que_es"
+                    android:textColor="@color/colorBlanco"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity=""
+                android:gravity="center"
+                android:text="by"
+                android:textColor="@color/colorBlanco"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_above="@id/logod33"
+                android:layout_marginBottom="10dp"/>
+
+            <ImageView
+                android:id="@+id/logod33"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@mipmap/logo_d3"
+                android:layout_margin="10dp"
+                android:layout_above="@+id/boton_des"
+                android:layout_centerInParent="true"></ImageView>
+
+            <Button
+                android:layout_above="@id/boton_cancelar"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_margin="30dp"
+                android:layout_centerHorizontal="true"
+                android:text="d3sarrollo.net"
+                android:textColor="@color/azul"
+                android:textSize="20dp"
+                android:id="@+id/boton_des"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"/>
+
+
+            <Button
+                android:layout_width="120dp"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:text="@string/cancelar1"
+                android:textColor="@color/azul"
+                android:textSize="20dp"
+                android:id="@+id/boton_cancelar"
+                android:background="@color/colorPrimary"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

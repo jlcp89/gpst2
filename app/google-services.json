@@ -1,0 +1,81 @@
+{
+  "project_info": {
+    "project_number": "195674435019",
+    "firebase_url": "https://gps-topography.firebaseio.com",
+    "project_id": "gps-topography",
+    "storage_bucket": "gps-topography.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195674435019:android:a5a1584e7296f4f0",
+        "android_client_info": {
+          "package_name": "com.desarrollojlcp.gps_topography"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195674435019-c40itaqco3i5jm8r2fc6r2kp444c3otg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "3a919145a84d41777328572346a69f5ca683c8eb"
+          }
+        },
+        {
+          "client_id": "195674435019-fvbg6dp20qsct58i1vb9di8ga5vtog1b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "8a581ed6bd8abae356789f9de8bd0b2662be5827"
+          }
+        },
+        {
+          "client_id": "195674435019-oc445m6ndta0hi6crpiv98i0i7eggst4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "1643c3af9d1939b9af84f1065366fc6cbacc2e83"
+          }
+        },
+        {
+          "client_id": "195674435019-te9mhen68h0eh7ak1rukpgg11skvupk6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "b5a92ab43f04463c09bc19482a6121d5004f2b31"
+          }
+        },
+        {
+          "client_id": "195674435019-ukhgmmvah1vk6vr5si1bo1784fbgrprs.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "e670e982852701f986f487ec746799b4e738690c"
+          }
+        },
+        {
+          "client_id": "195674435019-thfmv72373ukva2gqutr0gtflj8g2r8t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBDtahfeeVOZDTmelICteH8lXz9R8xQyCY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195674435019-thfmv72373ukva2gqutr0gtflj8g2r8t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      },
+      "admob_app_id": "ca-app-pub-7114592307899156~8502527700"
+    }
+  ],
+  "configuration_version": "1"
+}
