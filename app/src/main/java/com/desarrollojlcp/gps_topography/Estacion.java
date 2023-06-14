@@ -72,6 +72,30 @@ import java.util.Vector;
  */
 
 public class Estacion extends Azimut implements Cloneable, Serializable {
+    public int getIdEstacion() {
+        return idEstacion;
+    }
+
+    public void setIdEstacion(int idEstacion) {
+        this.idEstacion = idEstacion;
+    }
+
+    public String getIdEst() {
+        return idEst;
+    }
+
+    public void setIdEst(String idEst) {
+        this.idEst = idEst;
+    }
+
+    public double getAlt() {
+        return alt;
+    }
+
+    public void setAlt(double alt) {
+        this.alt = alt;
+    }
+
     int idEstacion;
     double Norte = 0;
     double Sur = 0;
@@ -96,6 +120,23 @@ public class Estacion extends Azimut implements Cloneable, Serializable {
     double dist = 0;
     Azimut azimut;
     public String idEst;
+
+    public double getLon() {
+        return lon;
+    }
+
+    public void setLon(double lon) {
+        this.lon = lon;
+    }
+
+    public double getLat() {
+        return lat;
+    }
+
+    public void setLat(double lat) {
+        this.lat = lat;
+    }
+
     double lon = 0;
     double lat = 0;
     double alt = 0;
@@ -109,6 +150,23 @@ public class Estacion extends Azimut implements Cloneable, Serializable {
     int contadorRadiaciones = 0;
     String tipoMedicion = "";
     public Vector<Estacion> radiaciones = new Vector<Estacion>();
+
+    public boolean isPartePoligonoFinal() {
+        return partePoligonoFinal;
+    }
+
+    public void setPartePoligonoFinal(boolean partePoligonoFinal) {
+        this.partePoligonoFinal = partePoligonoFinal;
+    }
+
+    public String getObservaciones() {
+        return observaciones;
+    }
+
+    public void setObservaciones(String observaciones) {
+        this.observaciones = observaciones;
+    }
+
     boolean partePoligonoFinal = false;
     protected String idAnterior = "";
     public int id_bd = 0;

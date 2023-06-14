@@ -53,6 +53,10 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.QueryProductDetailsParams;
 import com.android.billingclient.api.QueryPurchasesParams;
 import com.desarrollojlcp.gps_topography.utilidades.Utilidades;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -106,9 +110,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Vector;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 
 
 public class Ingreso extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener, PurchasesUpdatedListener {
+
+    private InterstitialAd mInterstitialAd;
 
     private static final int REQUEST_INVITE = 101;
 
@@ -245,7 +253,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                         if (productDetails.getProductId().equals(ITEM_SKU_SUBSCRIBE)) {
                             List subDetails = productDetails.getSubscriptionOfferDetails();
                             assert subDetails != null;
-                                launchPurchaseFlow(productDetails);
+                            launchPurchaseFlow(productDetails);
                         }
                     }
                 }
@@ -311,6 +319,8 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
 
@@ -345,9 +355,68 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
             }
         });
-        super.onCreate(savedInstanceState);
+        AdRequest adRequest = new AdRequest.Builder().build();
+
+        InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
+                new InterstitialAdLoadCallback() {
+                    @Override
+                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                        // The mInterstitialAd reference will be null until
+                        // an ad is loaded.
+                        mInterstitialAd = interstitialAd;
+                        Log.i(TAG, "onAdLoaded");
+                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
+                            @Override
+                            public void onAdClicked() {
+                                // Called when a click is recorded for an ad.
+                                Log.d(TAG, "Ad was clicked.");
+                            }
+
+                            @Override
+                            public void onAdDismissedFullScreenContent() {
+                                // Called when ad is dismissed.
+                                // Set the ad reference to null so you don't show the ad a second time.
+                                Log.d(TAG, "Ad dismissed fullscreen content.");
+                                mInterstitialAd = null;
+                            }
+
+                            @Override
+                            public void onAdFailedToShowFullScreenContent(AdError adError) {
+                                // Called when ad fails to show.
+                                Log.e(TAG, "Ad failed to show fullscreen content.");
+                                mInterstitialAd = null;
+                            }
+
+                            @Override
+                            public void onAdImpression() {
+                                // Called when an impression is recorded for an ad.
+                                Log.d(TAG, "Ad recorded an impression.");
+                            }
+
+                            @Override
+                            public void onAdShowedFullScreenContent() {
+                                // Called when ad is shown.
+                                Log.d(TAG, "Ad showed fullscreen content.");
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        // Handle the error
+                        Log.d(TAG, loadAdError.toString());
+                        mInterstitialAd = null;
+                    }
+                });
         try {
             valorSuscripcion = getSubscribeValueFromPref();
+            if (!valorSuscripcion){
+                if (mInterstitialAd != null) {
+                    mInterstitialAd.show(Ingreso.this);
+                } else {
+                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                }
+            }
             usos = getUsosValueFromPref();
             iniciarActividad();
         } catch (Exception e) {
@@ -538,6 +607,15 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
         botonAnalizar.setOnClickListener(view -> {
             if (estaciones.size() > 2) {
+                valorSuscripcion = getSubscribeValueFromPref();
+                if (!valorSuscripcion){
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd.show(Ingreso.this);
+                    } else {
+                        Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    }
+                }
+
                 calcular();
                 generarArchivos();
 
@@ -943,32 +1021,47 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     }
 
     private void agregarEstacionAlMapa(LatLng point) {
-        Estacion estTemp = new Estacion();
-        int F = estaciones.size();
-        String cadi1 = "E-" + F;
-        Poligono.contEs += 1;
-        estTemp.idEstacion = F;
-        estTemp.lon = point.longitude;
-        estTemp.lat = point.latitude;
-        estTemp.alt = elevacionGPS;
-        estTemp.idEst = cadi1;
-        estTemp.partePoligonoFinal = true;
-        estTemp.observaciones = textoObservaciones;
-        poligonoActual.ingresarEstacion(estTemp);
-        if (mMap != null) {
-            mMap.clear();
-            //Se imprime la posicion actual del usuario
-            ponerMarcadorPosicionActual();
-            if (estaciones.size()>0){
-                imprimirEstacionesGuardadas();
+        if (point != null){
+            Estacion estTemp = new Estacion();
+            int F = estaciones.size();
+            String cadi1 = "E-" + F;
+            Poligono.contEs += 1;
+            estTemp.setIdEstacion(F);
+            estTemp.setLon(point.longitude);
+            estTemp.setLat(point.latitude);
+            estTemp.setAlt(elevacionGPS);
+            estTemp.setIdEst(cadi1);
+            estTemp.setPartePoligonoFinal(true);
+            estTemp.setObservaciones(textoObservaciones);
+            poligonoActual.ingresarEstacion(estTemp);
+            if (mMap != null) {
+                mMap.clear();
+                //Se imprime la posicion actual del usuario
+                ponerMarcadorPosicionActual();
+                if (estaciones.size()>0){
+                    imprimirEstacionesGuardadas();
+                }
+
+                if (estaciones.size() % 2 == 0) {
+
+                }
+                if (!valorSuscripcion){
+                    if (mInterstitialAd != null) {
+                        mInterstitialAd.show(Ingreso.this);
+
+                    } else {
+                        Log.d("TAG", "The interstitial ad wasn't ready yet.");
+                    }
+                }
+
+                //se imprime la estacion nueva
+                String textoMarcadorPosicionUsuario = "E-" + Poligono.estaciones.size() + " -  " + point.latitude + ",  " + point.longitude;
+                mMap.addMarker(new MarkerOptions()
+                        .position(point)
+                        .title(textoMarcadorPosicionUsuario).flat(true));
+                //Se agrega el punto a el vector estaciones
+                estaciones.add(point);
             }
-            //se imprime la estacion nueva
-            String textoMarcadorPosicionUsuario = "E-" + Poligono.estaciones.size() + " -  " + point.latitude + ",  " + point.longitude;
-            mMap.addMarker(new MarkerOptions()
-                    .position(point)
-                    .title(textoMarcadorPosicionUsuario).flat(true));
-            //Se agrega el punto a el vector estaciones
-            estaciones.add(point);
         }
     }
 
@@ -1258,7 +1351,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             carpetaProyectoActual.mkdirs();
         }
 
-            //Toast.makeText(this, "Directory exists", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Directory exists", Toast.LENGTH_SHORT).show();
 
         ///////////////////////////////////////
 

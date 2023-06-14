@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "195674435019-5ofu7328jo7ngdvo5ff948eea1vk17f3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.desarrollojlcp.gps_topography",
+            "certificate_hash": "1781392d0e54c86426a47a1e14c271aefb4ef4b2"
+          }
+        },
+        {
           "client_id": "195674435019-c40itaqco3i5jm8r2fc6r2kp444c3otg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
