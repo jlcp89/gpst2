@@ -316,45 +316,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         return pref.edit();
     }
 
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-
-
-        gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener((billingResult, list) -> {}).build();
-        final BillingClient finalBillingClient = billingClient;
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingServiceDisconnected() {
-
-            }
-
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
-                    finalBillingClient.queryPurchasesAsync(
-                            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), (billingResult1, list) -> {
-                                if (billingResult1.getResponseCode() == BillingClient.BillingResponseCode.OK){
-                                    Log.d("testOffer",list.size() +" size");
-                                    if(list.size()>0){
-                                        saveSubscribeValueToPref(true);
-
-                                    }else {
-                                        saveSubscribeValueToPref(false);
-                                    }
-                                }
-                            });
-                }
-
-            }
-        });
+    private void cargarAnuncio(){
         AdRequest adRequest = new AdRequest.Builder().build();
 
         InterstitialAd.load(this,"ca-app-pub-3940256099942544/1033173712", adRequest,
@@ -408,11 +370,54 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                         mInterstitialAd = null;
                     }
                 });
+    }
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+
+
+        gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
+
+
+        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener((billingResult, list) -> {}).build();
+        final BillingClient finalBillingClient = billingClient;
+        billingClient.startConnection(new BillingClientStateListener() {
+            @Override
+            public void onBillingServiceDisconnected() {
+
+            }
+
+            @Override
+            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
+                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                    finalBillingClient.queryPurchasesAsync(
+                            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), (billingResult1, list) -> {
+                                if (billingResult1.getResponseCode() == BillingClient.BillingResponseCode.OK){
+                                    Log.d("testOffer",list.size() +" size");
+                                    if(list.size()>0){
+                                        saveSubscribeValueToPref(true);
+
+                                    }else {
+                                        saveSubscribeValueToPref(false);
+                                    }
+                                }
+                            });
+                }
+
+            }
+        });
+
         try {
             valorSuscripcion = getSubscribeValueFromPref();
             if (!valorSuscripcion){
                 if (mInterstitialAd != null) {
                     mInterstitialAd.show(Ingreso.this);
+                    cargarAnuncio();
                 } else {
                     Log.d("TAG", "The interstitial ad wasn't ready yet.");
                 }
@@ -424,6 +429,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             //Crashlytics.logException(e);
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
+        cargarAnuncio();
 
         //signIn();
 
@@ -611,6 +617,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 if (!valorSuscripcion){
                     if (mInterstitialAd != null) {
                         mInterstitialAd.show(Ingreso.this);
+                        cargarAnuncio();
                     } else {
                         Log.d("TAG", "The interstitial ad wasn't ready yet.");
                     }
@@ -1048,7 +1055,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 if (!valorSuscripcion){
                     if (mInterstitialAd != null) {
                         mInterstitialAd.show(Ingreso.this);
-
+                        cargarAnuncio();
                     } else {
                         Log.d("TAG", "The interstitial ad wasn't ready yet.");
                     }
