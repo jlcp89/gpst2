@@ -35,7 +35,7 @@
             android:value="${MAPS_API_KEY}" />
 
         <activity
-            android:name=".Ingreso"
+            android:name=".activity.Ingreso"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan"
             android:exported="true">
@@ -45,7 +45,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Splash"
+            android:name=".other.Splash"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan"
             android:exported = "true">
@@ -53,19 +53,19 @@
         </activity>
 
         <activity
-            android:name=".Info"
+            android:name=".activity.Info"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".BuscarCoordenadas"
+            android:name=".activity.BuscarCoordenadas"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Ingreso2"
+            android:name=".activity.Ingreso2"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".IngresoDistanciaAzimutEstacion"
+            android:name=".activity.IngresoDistanciaAzimutEstacion"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
 
@@ -74,24 +74,24 @@
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Cargar"
+            android:name=".activity.Cargar"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".MostrarPoligono"
+            android:name=".activity.MostrarPoligono"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".GuardarPoligono"
+            android:name=".activity.GuardarPoligono"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".IniciarSesion"
+            android:name=".activity.IniciarSesion"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
         <activity
-            android:name=".Registro"
+            android:name=".other.Registro"
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
 
