@@ -42,25 +42,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.billingclient.api.AcknowledgePurchaseParams;
-import com.android.billingclient.api.BillingClient;
-import com.android.billingclient.api.BillingClientStateListener;
-import com.android.billingclient.api.BillingFlowParams;
-import com.android.billingclient.api.BillingResult;
-import com.android.billingclient.api.ProductDetails;
-import com.android.billingclient.api.Purchase;
-import com.android.billingclient.api.PurchasesUpdatedListener;
-import com.android.billingclient.api.QueryProductDetailsParams;
-import com.android.billingclient.api.QueryPurchasesParams;
 import com.desarrollojlcp.gps_topography.BuildConfig;
 import com.desarrollojlcp.gps_topography.R;
 import com.desarrollojlcp.gps_topography.model.object.cabezera;
 import com.desarrollojlcp.gps_topography.model.db.Utilidades;
 import com.desarrollojlcp.gps_topography.model.object.Estacion;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
+
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -114,15 +101,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Vector;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
+
 import com.desarrollojlcp.gps_topography.model.object.Poligono;
 import com.desarrollojlcp.gps_topography.model.db.ConexionSQLiteHelper;
 
 
-public class Ingreso extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener, PurchasesUpdatedListener {
+public class Ingreso extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
-    private InterstitialAd mInterstitialAd;
 
     private static final int REQUEST_INVITE = 101;
 
@@ -161,7 +146,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     private FloatingActionButton botonCompartir;
     private boolean centrarPantalla = true;
     int tipoMedicionInt = 1;
-    private BillingClient billingClient;
     public static final String ITEM_SKU_SUBSCRIBE= "pro_sub1";
     public static final String PREF_FILE= "preferenciaSusGPSTpro";
     public static final String PREF_FILE_USOS= "preferenciaUSOSGPSTpro";
@@ -197,114 +181,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     private AutocompleteSupportFragment autocompleteFragment;
     private Geocoder gcd;
 
-
-
-
-    private void setUpBillingClient(){
-        //Initialize a BillingClient with PurchasesUpdatedListener onCreate method
-        billingClient = BillingClient.newBuilder(this)
-                .enablePendingPurchases()
-                .setListener(
-                        new PurchasesUpdatedListener() {
-                            @Override
-                            public void onPurchasesUpdated(@NonNull BillingResult billingResult, @Nullable List<Purchase> list) {
-                                if(billingResult.getResponseCode()==BillingClient.BillingResponseCode.OK && list !=null) {
-                                    for (Purchase purchase: list){
-                                        verifySubPurchase(purchase);
-                                    }
-                                }
-                            }
-                        }
-                ).build();
-
-        //start the connection after initializing the billing client
-        establishConnection();
-    }
-
-    void establishConnection() {
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                    // The BillingClient is ready. You can query purchases here.
-                    //showProducts();
-                    clienteCompraListo = true;
-                }
-            }
-            @Override
-            public void onBillingServiceDisconnected() {
-                // Try to restart the connection on the next request to
-                // Google Play by calling the startConnection() method.
-                establishConnection();
-            }
-        });
-    }
-
-
-    void showProducts() {
-        ImmutableList productList = ImmutableList.of(
-                //Product 1 = index is 0
-                QueryProductDetailsParams.Product.newBuilder()
-                        .setProductId(ITEM_SKU_SUBSCRIBE)
-                        .setProductType(BillingClient.ProductType.SUBS)
-                        .build()
-
-        );
-        QueryProductDetailsParams params = QueryProductDetailsParams.newBuilder()
-                .setProductList(productList)
-                .build();
-        billingClient.queryProductDetailsAsync(
-                params,
-                (billingResult, productDetailsList) -> {
-                    // Process the result
-                    for (ProductDetails productDetails : productDetailsList) {
-                        if (productDetails.getProductId().equals(ITEM_SKU_SUBSCRIBE)) {
-                            List subDetails = productDetails.getSubscriptionOfferDetails();
-                            assert subDetails != null;
-                            launchPurchaseFlow(productDetails);
-                        }
-                    }
-                }
-        );
-    }
-
-    void launchPurchaseFlow(ProductDetails productDetails) {
-        assert productDetails.getSubscriptionOfferDetails() != null;
-        ImmutableList productDetailsParamsList =
-                ImmutableList.of(
-                        BillingFlowParams.ProductDetailsParams.newBuilder()
-                                .setProductDetails(productDetails)
-                                .setOfferToken(productDetails.getSubscriptionOfferDetails().get(0).getOfferToken())
-                                .build()
-                );
-        BillingFlowParams billingFlowParams = BillingFlowParams.newBuilder()
-                .setProductDetailsParamsList(productDetailsParamsList)
-                .build();
-        BillingResult billingResult = billingClient.launchBillingFlow(this, billingFlowParams);
-    }
-
-    void verifySubPurchase(Purchase purchases) {
-        AcknowledgePurchaseParams acknowledgePurchaseParams = AcknowledgePurchaseParams
-                .newBuilder()
-                .setPurchaseToken(purchases.getPurchaseToken())
-                .build();
-
-        billingClient.acknowledgePurchase(acknowledgePurchaseParams, billingResult -> {
-            if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                saveSubscribeValueToPref(true);
-                this.recreate();
-            }
-        });
-
-        Log.d(TAG, "Purchase Token: " + purchases.getPurchaseToken());
-        Log.d(TAG, "Purchase Time: " + purchases.getPurchaseTime());
-        Log.d(TAG, "Purchase OrderID: " + purchases.getOrderId());
-    }
-
-    @Override
-    public void onPurchasesUpdated(BillingResult billingResult, @Nullable List<Purchase> purchases) {
-
-    }
     private void saveSubscribeValueToPref(boolean value){
         getPreferenceEditObject().putBoolean(SUBSCRIBE_KEY,value).commit();
     }
@@ -324,112 +200,12 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         return pref.edit();
     }
 
-    private void cargarAnuncio(){
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(this,"ca-app-pub-7114592307899156/1230497942", adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        Log.i(TAG, "onAdLoaded");
-                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback(){
-                            @Override
-                            public void onAdClicked() {
-                                // Called when a click is recorded for an ad.
-                                Log.d(TAG, "Ad was clicked.");
-                            }
-
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                // Set the ad reference to null so you don't show the ad a second time.
-                                Log.d(TAG, "Ad dismissed fullscreen content.");
-                                mInterstitialAd = null;
-                            }
-
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                // Called when ad fails to show.
-                                Log.e(TAG, "Ad failed to show fullscreen content.");
-                                mInterstitialAd = null;
-                            }
-
-                            @Override
-                            public void onAdImpression() {
-                                // Called when an impression is recorded for an ad.
-                                Log.d(TAG, "Ad recorded an impression.");
-                            }
-
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
-                                Log.d(TAG, "Ad showed fullscreen content.");
-                            }
-                        });
-                    }
-
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        Log.d(TAG, loadAdError.toString());
-                        mInterstitialAd = null;
-                    }
-                });
-    }
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-
-
         gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
-
-
-        billingClient = BillingClient.newBuilder(this).enablePendingPurchases().setListener((billingResult, list) -> {}).build();
-        final BillingClient finalBillingClient = billingClient;
-        billingClient.startConnection(new BillingClientStateListener() {
-            @Override
-            public void onBillingServiceDisconnected() {
-
-            }
-
-            @Override
-            public void onBillingSetupFinished(@NonNull BillingResult billingResult) {
-                if(billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK){
-                    finalBillingClient.queryPurchasesAsync(
-                            QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(), (billingResult1, list) -> {
-                                if (billingResult1.getResponseCode() == BillingClient.BillingResponseCode.OK){
-                                    Log.d("testOffer",list.size() +" size");
-                                    if(list.size()>0){
-                                        saveSubscribeValueToPref(true);
-
-                                    }else {
-                                        saveSubscribeValueToPref(false);
-                                    }
-                                }
-                            });
-                }
-
-            }
-        });
-
         try {
             valorSuscripcion = getSubscribeValueFromPref();
-            if (!valorSuscripcion){
-                if (mInterstitialAd != null) {
-                    mInterstitialAd.show(Ingreso.this);
-                    cargarAnuncio();
-                } else {
-                    Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                }
-            }
             usos = getUsosValueFromPref();
             iniciarActividad();
         } catch (Exception e) {
@@ -437,9 +213,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             //Crashlytics.logException(e);
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
-        cargarAnuncio();
 
-        //signIn();
 
         // Set up a PlaceSelectionListener to handle the response.
         if (!Places.isInitialized()) {
@@ -622,15 +396,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         botonAnalizar.setOnClickListener(view -> {
             if (estaciones.size() > 2) {
                 valorSuscripcion = getSubscribeValueFromPref();
-                if (!valorSuscripcion){
-                    if (mInterstitialAd != null) {
-                        mInterstitialAd.show(Ingreso.this);
-                        cargarAnuncio();
-                    } else {
-                        Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                    }
-                }
-
                 calcular();
                 generarArchivos();
 
@@ -750,14 +515,11 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
         gcd = new Geocoder(getApplicationContext(), Locale.getDefault());
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-        setUpBillingClient();
         valorSuscripcion = getSubscribeValueFromPref();
 
 
         linearSuscripcion.setOnClickListener(view -> {
-            if (clienteCompraListo){
-                showProducts();
-            }
+
         });
 
 
@@ -1060,14 +822,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 if (estaciones.size() % 2 == 0) {
 
                 }
-                if (!valorSuscripcion){
-                    if (mInterstitialAd != null) {
-                        mInterstitialAd.show(Ingreso.this);
-                        cargarAnuncio();
-                    } else {
-                        Log.d("TAG", "The interstitial ad wasn't ready yet.");
-                    }
-                }
 
                 //se imprime la estacion nueva
                 String textoMarcadorPosicionUsuario = "E-" + poligonoActual.estaciones.size() + " -  " + point.latitude + ",  " + point.longitude;
@@ -1196,18 +950,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     @Override
     public void onResume() {
         super.onResume();
-        billingClient.queryPurchasesAsync(
-                QueryPurchasesParams.newBuilder().setProductType(BillingClient.ProductType.SUBS).build(),
-                (billingResult, list) -> {
-                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                        for (Purchase purchase : list) {
-                            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED && !purchase.isAcknowledged()) {
-                                verifySubPurchase(purchase);
-                            }
-                        }
-                    }
-                }
-        );
+
         checkLocation();
         try {
             startLocationUpdates();
