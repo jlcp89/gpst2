@@ -8,7 +8,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
-    <uses-permission android:name="com.android.vending.BILLING" />
 
     <application
         android:allowBackup="true"
@@ -26,9 +25,6 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <meta-data
-            android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-7114592307899156~8502527700"/>
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -69,10 +65,7 @@
             android:screenOrientation="fullSensor"
             android:windowSoftInputMode="adjustPan" />
 
-        <activity
-            android:name=".DashboardActivity"
-            android:screenOrientation="fullSensor"
-            android:windowSoftInputMode="adjustPan" />
+
         <activity
             android:name=".activity.Cargar"
             android:screenOrientation="fullSensor"

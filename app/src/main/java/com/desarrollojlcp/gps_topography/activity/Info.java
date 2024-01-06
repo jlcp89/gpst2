@@ -26,7 +26,7 @@ public class Info extends AppCompatActivity  {
         botonManual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "https://d3sarrollo.net/gps-topography/";
+                String url = "https://jlcp89.github.io/d3sarrollo/#/gpst";
                 abirLink(url);
             }
         });
@@ -55,7 +55,7 @@ public class Info extends AppCompatActivity  {
         botonDes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String url = "http://www.d3sarrollo.net";
+                String url = "https://jlcp89.github.io/d3sarrollo/#/gpst";
                 abirLink(url);
             }
         });

@@ -162,7 +162,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
                 botonAgregarPunto.performClick();
                 return true;
             case R.id.acerca_de:
-                abirLink("https://d3sarrollo.net/gps-topography/");
+                abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
                 return true;
 
             default:
@@ -672,7 +672,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
         try {
             pw = new FileOutputStream(file);
             StringBuilder sb = new StringBuilder();
-            cadTemp = "#Point,X,Y,Z  -  (m)  -  www.d3sarrollo.com";
+            cadTemp = "#Point,X,Y,Z  -  (m)  -  https://jlcp89.github.io/d3sarrollo/#/gpst";
             sb.append(cadTemp);
 
             sb.append("\r\n");

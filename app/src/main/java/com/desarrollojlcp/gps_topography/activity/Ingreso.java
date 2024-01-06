@@ -144,7 +144,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     long intervalo = 200;
     private FloatingActionButton botonBuscarCoordenadas, botonPoligono, botonLinea, botonPunto, botonCentrar, botonInfo, botonAgregarPunto, botonUnDo, botonRecalcular, botonAnalizar, botonPro, botonGuardar, botonCargar;
     private FloatingActionButton botonCompartir;
-    private boolean centrarPantalla = true;
+    private boolean centrarPantalla = false;
     int tipoMedicionInt = 1;
     public static final String ITEM_SKU_SUBSCRIBE= "pro_sub1";
     public static final String PREF_FILE= "preferenciaSusGPSTpro";
@@ -458,7 +458,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 return true;
 
             case R.id.acerca_de:
-                abirLink("https://d3sarrollo.net/gps-topography/");
+                abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
                 return true;
 
 
@@ -522,6 +522,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
         });
 
+        botonCentrar.performClick();
 
     }
 
