@@ -104,7 +104,7 @@ public class cabezera extends PdfPageEventHelper {
         float largoPaginaA4 = PageSize.A4.getTop() - 30;
         fuente.setSize(5);
         ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_LEFT, new Phrase("powered by iTextG", fuente), 405, 830, 0);
-        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("www.d3sarrollo.com"), (anchoPaginaA4 / 2), 815, 0);
+        ColumnText.showTextAligned(writer.getDirectContent(), Element.ALIGN_CENTER, new Phrase("https://jlcp89.github.io/d3sarrollo/#/gpst"), (anchoPaginaA4 / 2), 815, 0);
         Rectangle rect1 = new Rectangle(20, 40, anchoPaginaA4, largoPaginaA4);
         rect1.setBorder(Rectangle.BOX);
         rect1.setBorderWidth(2);

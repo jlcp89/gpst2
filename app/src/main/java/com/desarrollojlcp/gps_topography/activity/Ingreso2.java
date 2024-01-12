@@ -142,33 +142,35 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.guardar:
-                botonGuardar.performClick();
-                return true;
-            case R.id.cargar:
-                botonCargar.performClick();
-                return true;
-            case R.id.cambiar_pantalla:
-                botonRecalcular.performClick();
-                return true;
-            case R.id.poligono:
-                return true;
-            case R.id.linea:
-                return true;
-            case R.id.puntos:
-                return true;
-            case R.id.capturar_ubicacion_actual:
-                botonAgregarPunto.performClick();
-                return true;
-            case R.id.acerca_de:
-                abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
-                return true;
+        int itemId = item.getItemId();
 
-            default:
-                return super.onOptionsItemSelected(item);
+        if (itemId == R.id.guardar) {
+            botonGuardar.performClick();
+            return true;
+        } else if (itemId == R.id.cargar) {
+            botonCargar.performClick();
+            return true;
+        } else if (itemId == R.id.cambiar_pantalla) {
+            botonRecalcular.performClick();
+            return true;
+        } else if (itemId == R.id.poligono) {
+            botonPoligono.performClick();
+            return true;
+        } else if (itemId == R.id.linea) {
+            botonLinea.performClick();
+            return true;
+        } else if (itemId == R.id.puntos) {
+            botonPunto.performClick();
+            return true;
+        } else if (itemId == R.id.capturar_ubicacion_actual) {
+            botonAgregarPunto.performClick();
+            return true;
+        } else if (itemId == R.id.acerca_de) {
+            abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
     }
 
     private boolean getSubscribeValueFromPref(){

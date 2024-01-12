@@ -35,7 +35,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -44,10 +43,11 @@ import androidx.core.content.ContextCompat;
 
 import com.desarrollojlcp.gps_topography.BuildConfig;
 import com.desarrollojlcp.gps_topography.R;
-import com.desarrollojlcp.gps_topography.model.object.cabezera;
+import com.desarrollojlcp.gps_topography.model.db.ConexionSQLiteHelper;
 import com.desarrollojlcp.gps_topography.model.db.Utilidades;
 import com.desarrollojlcp.gps_topography.model.object.Estacion;
-
+import com.desarrollojlcp.gps_topography.model.object.Poligono;
+import com.desarrollojlcp.gps_topography.model.object.cabezera;
 import com.google.android.gms.appinvite.AppInviteInvitation;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -72,7 +72,6 @@ import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.common.collect.ImmutableList;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.maps.android.SphericalUtil;
 import com.itextpdf.text.Document;
@@ -102,9 +101,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Vector;
 
-import com.desarrollojlcp.gps_topography.model.object.Poligono;
-import com.desarrollojlcp.gps_topography.model.db.ConexionSQLiteHelper;
-
 
 public class Ingreso extends AppCompatActivity implements View.OnClickListener, OnMapReadyCallback, LocationListener {
 
@@ -120,7 +116,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     LocationManager locationManager;
     private GoogleMap mMap;
     private static Vector<LatLng> estaciones = new Vector<>();
-    private Paint paint = new Paint();
+    private final Paint paint = new Paint();
     public static String encabezado, autor;
     public static PdfPTable tabla1;
     Phrase ESPACIO = new Phrase(" ");
@@ -137,16 +133,14 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     boolean permisoUbicacion = false;
     ConexionSQLiteHelper helper;
     private FusedLocationProviderClient fusedLocationClient;
-    private LocationRequest locationRequest;
+    private final LocationRequest locationRequest = LocationRequest.create();
     private LocationCallback locationCallback;
     private Location lastLocation;
-    private boolean poligonoCargado = false;
     long intervalo = 200;
     private FloatingActionButton botonBuscarCoordenadas, botonPoligono, botonLinea, botonPunto, botonCentrar, botonInfo, botonAgregarPunto, botonUnDo, botonRecalcular, botonAnalizar, botonPro, botonGuardar, botonCargar;
     private FloatingActionButton botonCompartir;
     private boolean centrarPantalla = false;
     int tipoMedicionInt = 1;
-    public static final String ITEM_SKU_SUBSCRIBE= "pro_sub1";
     public static final String PREF_FILE= "preferenciaSusGPSTpro";
     public static final String PREF_FILE_USOS= "preferenciaUSOSGPSTpro";
 
@@ -158,7 +152,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     private LinearLayout linearSuscripcion;
     private FirebaseAnalytics mFirebaseAnalytics;
-    private boolean clienteCompraListo = false;
 
 
     private boolean getSubscribeValueFromPref(){
@@ -180,16 +173,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     //private ImageView guardar, cargar, cambiar;
     private AutocompleteSupportFragment autocompleteFragment;
     private Geocoder gcd;
-
-    private void saveSubscribeValueToPref(boolean value){
-        getPreferenceEditObject().putBoolean(SUBSCRIBE_KEY,value).commit();
-    }
-
-
-    private SharedPreferences.Editor getPreferenceEditObject() {
-        SharedPreferences pref = getApplicationContext().getSharedPreferences(PREF_FILE, 0);
-        return pref.edit();
-    }
 
     private void saveUsosValueToPref(int value){
         getPreferenceEditObjectUsos().putInt(USOS_KEY,value).commit();
@@ -269,19 +252,26 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     private void cargarPoligono() {
         try {
             poligonoActual = (Poligono) Objects.requireNonNull(getIntent().getExtras()).getSerializable("pol_trab");
-            if (poligonoActual.estaciones.size() > 0) {
-                estaciones.removeAllElements();
-                for (int i = 0; i < poligonoActual.estaciones.size(); i++) {
-                    Estacion e = new Estacion();
-                    e.idEst = poligonoActual.estaciones.elementAt(i).idEst;
-                    e.setLat(poligonoActual.estaciones.elementAt(i).getLat());
-                    e.setLon(poligonoActual.estaciones.elementAt(i).getLon());
-                    LatLng point = new LatLng(e.getLat(), e.getLon());
-                    estaciones.addElement(point);
+            if (poligonoActual != null) {
+                if (poligonoActual.estaciones.size() > 0) {
+                    estaciones.removeAllElements();
+                    for (int i = 0; i < poligonoActual.estaciones.size(); i++) {
+                        Estacion e = new Estacion();
+                        e.idEst = poligonoActual.estaciones.elementAt(i).idEst;
+                        e.setLat(poligonoActual.estaciones.elementAt(i).getLat());
+                        e.setLon(poligonoActual.estaciones.elementAt(i).getLon());
+                        LatLng point = new LatLng(e.getLat(), e.getLon());
+                        estaciones.addElement(point);
+                    }
                 }
-                poligonoCargado = true;
+                else {
+                    Toast.makeText(getApplicationContext(), getResources().getText(R.string.tres_puntos), Toast.LENGTH_LONG).show();
+                }
             }
+
         } catch (NullPointerException ignored) {
+            Log.d(TAG, "cargarPoligono: Poligono cargado nulo, mensaje desde cath");
+
         }
     }
 
@@ -335,7 +325,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         setBotonesTipoMedicion();
 
         botonPro.setOnClickListener(view -> {
-            String url = "https://play.google.com/store/apps/details?id=com.desarrollojlcp.gps_topography_pro";
+            String url = "https://play.google.com/store/apps/details?id=com.desarrollojlcp.gps_topography";
             abirLink(url);
         });
 
@@ -434,38 +424,35 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.guardar:
-                botonGuardar.performClick();
-                return true;
-            case R.id.cargar:
-                botonCargar.performClick();
-                return true;
-            case R.id.cambiar_pantalla:
-                botonRecalcular.performClick();
-                return true;
-            case R.id.poligono:
-                botonPoligono.performClick();
-                return true;
-            case R.id.linea:
-                botonLinea.performClick();
-                return true;
-            case R.id.puntos:
-                botonPunto.performClick();
-                return true;
-            case R.id.capturar_ubicacion_actual:
-                botonAgregarPunto.performClick();
-                return true;
+        int itemId = item.getItemId();
 
-            case R.id.acerca_de:
-                abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if (itemId == R.id.guardar) {
+            botonGuardar.performClick();
+            return true;
+        } else if (itemId == R.id.cargar) {
+            botonCargar.performClick();
+            return true;
+        } else if (itemId == R.id.cambiar_pantalla) {
+            botonRecalcular.performClick();
+            return true;
+        } else if (itemId == R.id.poligono) {
+            botonPoligono.performClick();
+            return true;
+        } else if (itemId == R.id.linea) {
+            botonLinea.performClick();
+            return true;
+        } else if (itemId == R.id.puntos) {
+            botonPunto.performClick();
+            return true;
+        } else if (itemId == R.id.capturar_ubicacion_actual) {
+            botonAgregarPunto.performClick();
+            return true;
+        } else if (itemId == R.id.acerca_de) {
+            abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-
     }
 
 
@@ -486,9 +473,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         firma = getResources().getText(R.string.firma_sello).toString();
         pagina = getResources().getText(R.string.pagina).toString() + " ";
         de = getResources().getText(R.string.de).toString();
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-            verificarPermisos();
-        }
+        verificarPermisos();
 
         cargarPoligono();
 
@@ -555,15 +540,9 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             }
 
         } else {
-            if(centrarPantalla){
-                if (segundoUso){
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
-                    segundoUso = false;
-                }
-            } else {
-                //zoom = mMap.getCameraPosition().zoom;
-                //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latitudGPS, longitudGPS), zoom));
-
+            if(centrarPantalla) if (segundoUso) {
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
+                segundoUso = false;
             }
         }
     }
@@ -577,7 +556,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     private void setFusedParaTrabajo() {
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
-        locationRequest = LocationRequest.create();
         locationRequest.setInterval(intervalo);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationCallback = new LocationCallback() {
@@ -591,51 +569,55 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 }
                 latAnterior = latitudGPS;
                 lonAnterior = longitudGPS;
-                latitudGPS = lastLocation.getLatitude();
-                longitudGPS = lastLocation.getLongitude();
-                elevacionGPS = lastLocation.getAltitude();
-                velocidad = lastLocation.getSpeed();
-                double precision = lastLocation.getAccuracy();
-                double distanciaKM = distKMGPS(latAnterior, lonAnterior, latitudGPS, longitudGPS);
-                contadorTiempo = contadorTiempo + 1;
-                if (contadorTiempo == 10){
-                    double difHoras = 0.0000277 * 10;
-                    velocidad = distanciaKM / difHoras;
-                    contadorTiempo = 0;
+                if (lastLocation != null){
+                    latitudGPS = lastLocation.getLatitude();
+                    longitudGPS = lastLocation.getLongitude();
+                    elevacionGPS = lastLocation.getAltitude();
+                    velocidad = lastLocation.getSpeed();
+                    double precision = lastLocation.getAccuracy();
+                    double distanciaKM = distKMGPS(latAnterior, lonAnterior, latitudGPS, longitudGPS);
+                    contadorTiempo = contadorTiempo + 1;
+                    if (contadorTiempo == 10){
+                        double difHoras = 0.0000277 * 10;
+                        velocidad = distanciaKM / difHoras;
+                        contadorTiempo = 0;
+                    }
+
+                    dibujarPantalla();
+                    DecimalFormat df = new DecimalFormat("###,###,###,###,###.###");
+                    String elevacion = df.format(elevacionGPS);
+                    String textoParaResultado =  actualizarAreaPantalla();
+                    textoResultados.setText(textoParaResultado);
+                    zoom = 19f;
+                    centrarPantallaBien();
+                    String currentSpeed = df.format(velocidad);
+                    String textoPresicion = df.format(precision);
+
+                    df = new DecimalFormat("##.########");
+                    String textoLat = df.format(latitudGPS);
+                    String textoLon = df.format(longitudGPS);
+
+                    List<Address> addresses = null;
+                    try {
+                        if (gcd != null ){
+                            addresses = gcd.getFromLocation(Objects.requireNonNull(locationResult.getLastLocation()).getLatitude(), locationResult.getLastLocation().getLongitude(), 1);
+                        } else {
+                            Toast.makeText(getApplicationContext(), "Can't load Name", Toast.LENGTH_SHORT).show();
+                        }
+                        if (addresses != null){
+                            if (addresses.size() > 0)
+                                direccion = (addresses.get(0).getAddressLine(0));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    coordi = "Lat(GPS)= " + textoLat + " *** Lon(GPS)= " + textoLon+ " **** Alt(m)= " + elevacion ;
+                    String texto = "Lat(GPS)= " + textoLat + " *** Lon(GPS)= " + textoLon+ " *** Alt(m)= " + elevacion + " *** Speed(Km/H)= " +currentSpeed+ " *** Name= "+ direccion + " *** Accuracy(m) = "+ textoPresicion;
+                    textoResultados2.setText(texto);
                 }
 
-                dibujarPantalla();
-                DecimalFormat df = new DecimalFormat("###,###,###,###,###.###");
-                String elevacion = df.format(elevacionGPS);
-                String textoParaResultado =  actualizarAreaPantalla();
-                textoResultados.setText(textoParaResultado);
-                zoom = 19f;
-                centrarPantallaBien();
-                String currentSpeed = df.format(velocidad);
-                String textoPresicion = df.format(precision);
 
-                df = new DecimalFormat("##.########");
-                String textoLat = df.format(latitudGPS);
-                String textoLon = df.format(longitudGPS);
-
-                List<Address> addresses = null;
-                try {
-                    if (gcd != null ){
-                        addresses = gcd.getFromLocation(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude(), 1);
-                    } else {
-                        Toast.makeText(getApplicationContext(), "Can't load Name", Toast.LENGTH_SHORT).show();
-                    }
-                    if (addresses != null){
-                        if (addresses.size() > 0)
-                            direccion = (addresses.get(0).getAddressLine(0));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                coordi = "Lat(GPS)= " + textoLat + " * Lon(GPS)= " + textoLon+ " * Alt(m)= " + elevacion ;
-                String texto = "Lat(GPS)= " + textoLat + " * Lon(GPS)= " + textoLon+ " * Alt(m)= " + elevacion + " * Speed(Km/H)= " +currentSpeed+ " * Name= "+ direccion + " * Accuracy(m) = "+ textoPresicion;
-                textoResultados2.setText(texto);
             }
         };
 
@@ -717,19 +699,15 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        if (googleMap != null) {
-            mMap = googleMap;
-            mMap.clear();
-            mMap.setMinZoomPreference(12f);
-            mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-            dibujarPantalla();
-            mMap.setOnMapClickListener(pointT -> {
-                primerUso = false;
-                if (pointT != null){
-                    dibujarPantalla(pointT);
-                }
-            });
-        }
+        mMap = googleMap;
+        mMap.clear();
+        mMap.setMinZoomPreference(12f);
+        mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        dibujarPantalla();
+        mMap.setOnMapClickListener(pointT -> {
+            primerUso = false;
+            dibujarPantalla(pointT);
+        });
     }
 
     public void ponerMarcadorPosicionActual() {
@@ -820,10 +798,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                     imprimirEstacionesGuardadas();
                 }
 
-                if (estaciones.size() % 2 == 0) {
-
-                }
-
                 //se imprime la estacion nueva
                 String textoMarcadorPosicionUsuario = "E-" + poligonoActual.estaciones.size() + " -  " + point.latitude + ",  " + point.longitude;
                 mMap.addMarker(new MarkerOptions()
@@ -901,9 +875,9 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 areSal = String.valueOf(0.0);
             }
             String peri = df.format(perimetro1);
-            textoParaResultado = "Points(#)= " + (estaciones.size()) + "  -  A(m2)= " + areSal + "  -  P(m)= " + peri;
+            textoParaResultado = "Points(#)= " + (estaciones.size()) + "  ***  A(m2)= " + areSal + "  ***  P(m)= " + peri;
         } else {
-            textoParaResultado = "Points(#)= " + (estaciones.size()) + "  -  A(m2)= " + areSal + "  -  P(m)= 0";
+            textoParaResultado = "Points(#)= " + (estaciones.size()) + "  ***  A(m2)= " + areSal + "  ***  P(m)= 0";
         }
         return textoParaResultado;
     }
@@ -957,7 +931,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             startLocationUpdates();
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(getApplicationContext(), "An error occurred, please send this info to www.d3sarrollo.com, thanks! " + e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "An error occurred, please send this info to https://jlcp89.github.io/d3sarrollo/#/gpst, thanks! " + e.toString(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -1091,42 +1065,18 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         String nombreArchivoDXF = fechaNombreReporte+".dxf";
         poligonoActual.nombreArchivoImagen = fechaNombreReporte+".jpg";
         String nombreArchivoPDF = fechaNombreReporte+".pdf";
-        fechaNombreReporte.replace(" ","");
+        fechaNombreReporte = fechaNombreReporte.replace(" ","");
         poligonoActual.nombreArchivoCSV = nombreArchivoCSV;
         poligonoActual.nombreArchivoGuardado = fechaNombreReporte;
         poligonoActual.nombreArchivoDXF = nombreArchivoDXF;
         poligonoActual.rutaArchivoCSV = poligonoActual.rutaCarpetaActual2 + File.separator + poligonoActual.nombreArchivoCSV;
         poligonoActual.rutaArchivoDXF = poligonoActual.rutaCarpetaActual2 + File.separator + poligonoActual.nombreArchivoDXF;
 
-        /*File carpetaProyectosGPST = new File (Poligono.rutaCarpetaActual);
-        if (!carpetaProyectosGPST.exists()) {
-            carpetaProyectosGPST.mkdirs();
-        }
-        File carpetaProyectoActual = new File (Poligono.rutaCarpetaActual2);*/
-        ////////////////////////////////////////
 
         File carpetaProyectoActual = new File(poligonoActual.rutaCarpetaActual);
         if (!carpetaProyectoActual.exists()){
             carpetaProyectoActual.mkdirs();
         }
-
-        //Toast.makeText(this, "Directory exists", Toast.LENGTH_SHORT).show();
-
-        ///////////////////////////////////////
-
-        /*File carpetaProyectoActual = new File (Poligono.rutaCarpetaActual);
-        boolean exitoCreandoCarpetaActual = true;
-
-        if (!carpetaProyectoActual.exists()){
-            Toast.makeText(this, "Directory Does Not Exist, Create It", Toast.LENGTH_SHORT).show();
-            exitoCreandoCarpetaActual = carpetaProyectoActual.mkdirs();
-        }
-        if (exitoCreandoCarpetaActual) {
-            Toast.makeText(this, "Directory Created", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Failed - Error", Toast.LENGTH_SHORT).show();
-        }*/
-
 
         usos = getUsosValueFromPref();
 
@@ -1135,22 +1085,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
             generarTXT(poligonoActual.rutaCarpetaActual2);
             generarDXF();
             Toast.makeText(getApplicationContext(), "PRO User, 3 files generated!", Toast.LENGTH_LONG).show();
-
-        } else {
-            if (usos < 6){
-                generarPDF(poligonoActual.rutaCarpetaActual2, nombreArchivoPDF);
-                generarTXT(poligonoActual.rutaCarpetaActual2);
-                generarDXF();
-                usos = usos + 1;
-                saveUsosValueToPref(usos);
-                int usosRestantes = 5-getUsosValueFromPref();
-                Toast.makeText(getApplicationContext(), "PDF and DXF files generated, your remaining uses of free trial: " + usosRestantes, Toast.LENGTH_LONG).show();
-
-            }else {
-                generarTXT(poligonoActual.rutaCarpetaActual2);
-                Toast.makeText(getApplicationContext(), "No free trial, only TXT file was generated", Toast.LENGTH_LONG).show();
-
-            }
 
         }
 
@@ -1171,7 +1105,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         try {
             pw = new FileOutputStream(file);
             StringBuilder sb = new StringBuilder();
-            cadTemp = "#Point,Description,X,Y,Z  -  (m)  -  www.d3sarrollo.com";
+            cadTemp = "#Point,Description,X,Y,Z  -  (m)  -  https://jlcp89.github.io/d3sarrollo/#/gpst";
             sb.append(cadTemp);
 
             sb.append("\r\n");
@@ -2577,7 +2511,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(@NonNull Location location) {
     }
 
     @Override
@@ -2585,11 +2519,11 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     }
 
     @Override
-    public void onProviderEnabled(String provider) {
+    public void onProviderEnabled(@NonNull String provider) {
     }
 
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(@NonNull String provider) {
     }
 
     @Override

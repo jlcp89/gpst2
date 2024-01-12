@@ -43,7 +43,7 @@
                 android:background="@color/colorGris"
                 android:gravity="center"
                 android:layout_below="@id/relativeToolbar"
-                android:padding="10dp"
+                android:padding="0dp"
                 >
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:padding="5dp"
                     android:text="---"
                     android:textColor="@color/azul"
-                    android:textSize="14dp" />
+                    android:textSize="12dp" />
 
 
                 <TextView
@@ -72,7 +72,7 @@
                     android:padding="5dp"
                     android:text="---"
                     android:textColor="@color/azul"
-                    android:textSize="14dp"
+                    android:textSize="12dp"
                     android:layout_margin="5dp"/>
                 <fragment
                     android:id="@+id/autocomplete_fragment"
