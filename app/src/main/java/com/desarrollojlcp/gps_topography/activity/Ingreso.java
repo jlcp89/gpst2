@@ -150,7 +150,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
     private boolean valorSuscripcion = false;
     private int usos = 0;
 
-    private LinearLayout linearSuscripcion;
     private FirebaseAnalytics mFirebaseAnalytics;
 
 
@@ -190,43 +189,43 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         try {
             valorSuscripcion = getSubscribeValueFromPref();
             usos = getUsosValueFromPref();
+            // Inicializar Places
+            if (!Places.isInitialized()) {
+                Places.initialize(getApplicationContext(), getString(R.string.google_maps_key));
+            }
+
+            // Obtener el AutocompleteSupportFragment
+            AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                    getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+            // Verificar si el fragmento es null y configurarlo adecuadamente
+            if (autocompleteFragment != null) {
+                autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
+                autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+                    @Override
+                    public void onPlaceSelected(Place place) {
+                        // Manejar la selección del lugar
+                        Log.i(TAG, "Place: " + place.getName() + ", " + place.getId() + ", " + place.getLatLng());
+                    }
+
+                    @Override
+                    public void onError(com.google.android.gms.common.api.Status status) {
+                        // Manejar el error
+                        Log.e(TAG, "An error occurred: " + status);
+                    }
+                });
+            } else {
+                Log.e(TAG, "Error al inicializar el AutocompleteSupportFragment: el fragmento es null");
+            }
             iniciarActividad();
         } catch (Exception e) {
             e.printStackTrace();
             //Crashlytics.logException(e);
             Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
-
-
-        // Set up a PlaceSelectionListener to handle the response.
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), BuildConfig.MAPS_API_KEY);
-        }
-
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Objects.requireNonNull(place.getLatLng()), (float) 17.50));
-            }
-            @Override
-            public void onError(@NonNull Status status) {
-                Log.i(TAG, "An error occurred: " + status);
-            }
-        });
-
-
     }
 
     private void agregarFindIdS() {
-        // Initialize the AutocompleteSupportFragment.
-        autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
-        assert autocompleteFragment != null;
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.LAT_LNG));
-
-
-
         botonInfo = findViewById(R.id.boton_info);
         botonAgregarPunto = findViewById(R.id.boton_agregar_punto);
         botonUnDo = findViewById(R.id.boton_undo);
@@ -242,7 +241,6 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         botonCargar = findViewById(R.id.boton_cargar);
         botonCompartir = findViewById(R.id.boton_compartir);
         textoResultados = findViewById(R.id.texto_resultados);
-        linearSuscripcion = findViewById(R.id.linear_sus);
         textoResultados2 = findViewById(R.id.texto_resultados2);
         poligonoActual.setTipoMedicion("poligono");
         tipoMedicionInt = 1;
@@ -366,20 +364,23 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                 Toast.makeText(getApplicationContext(), "Center mode - ON", Toast.LENGTH_SHORT).show();
                 botonCentrar.setBackgroundTintList(ColorStateList.valueOf(getColor(R.color.colorPrimary)));
             }
-            LatLng point = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
 
-            if (mMap != null) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, mMap.getCameraPosition().zoom));
+            if (lastLocation != null){
+                LatLng point = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
+                if (mMap != null) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(point, mMap.getCameraPosition().zoom));
+                }
             }
+
         });
 
         botonUnDo.setOnClickListener(view -> {
-            if (estaciones.size() < 1) {
-                Toast.makeText(getApplicationContext(), getResources().getText(R.string.no_estacion), Toast.LENGTH_LONG).show();
-            } else {
+            if ((!estaciones.isEmpty()) && (!poligonoActual.estaciones.isEmpty())) {
                 estaciones.removeElementAt(estaciones.size() - 1);
-                poligonoActual.estaciones.removeElementAt(poligonoActual.getEstaciones().size() - 1);
+                poligonoActual.estaciones.removeElementAt(poligonoActual.estaciones.size() - 1);
                 dibujarPantalla();
+            } else {
+                Toast.makeText(getApplicationContext(), getResources().getText(R.string.no_estacion), Toast.LENGTH_LONG).show();
             }
         });
 
@@ -407,7 +408,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         });
 
         botonRecalcular.setOnClickListener(view -> {
-            if (estaciones.size() > 0) {
+            if (!estaciones.isEmpty()) {
                 preguntarSalir();
             } else {
                 limpiarPoligonoParaIngreso2();
@@ -503,9 +504,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         valorSuscripcion = getSubscribeValueFromPref();
 
 
-        linearSuscripcion.setOnClickListener(view -> {
 
-        });
 
         botonCentrar.performClick();
 
@@ -533,16 +532,20 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
         if (primerUso) {
             if (mMap != null){
                 mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
-                primerUso = false;
+                if (lastLocation != null){
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
+                    primerUso = false;
+                }
             } else {
                 primerUso = true;
             }
 
         } else {
             if(centrarPantalla) if (segundoUso) {
-                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
-                segundoUso = false;
+                if (lastLocation != null){
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude()), 19.0f));
+                    segundoUso = false;
+                }
             }
         }
     }
@@ -964,6 +967,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         try {
             new AlertDialog.Builder(this, R.style.AlertDialogStyle)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -972,7 +976,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                     .setPositiveButton(getResources().getText(R.string.si), (dialog, which) -> finish())
                     .setNegativeButton(getResources().getText(R.string.no), null)
                     .show();
-        } catch (Exception e){
+        } catch (Exception e) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

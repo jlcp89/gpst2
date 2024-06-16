@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/iconoMenu"
         android:icon="@drawable/icono_menu"
         app:showAsAction="never"
-        android:title="@string/archivo"
-
-        >
+        android:title="@string/archivo">
 
         <menu>
             <item android:id="@+id/guardar"
@@ -18,9 +14,7 @@
             <item android:id="@+id/cargar"
                 app:showAsAction="never"
                 android:title="@string/cargar"/>
-
         </menu>
-
     </item>
 
     <item android:id="@+id/cambiar_pantalla"

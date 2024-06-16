@@ -26,7 +26,6 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.Vector;
 
-
 public class BuscarCoordenadas extends AppCompatActivity {
 
     private RadioButton radioGPS, radioUTM;
@@ -36,6 +35,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
 
     Poligono polTrab;
     private Button botonCancel;
+    private Button botonBuscarGPS, botonBuscarUTM;
 
     //private InterstitialAd mInterstitialAd = new InterstitialAd(this);
     public static final String PREF_FILE= "preferenciaSusGPSTpro";
@@ -49,8 +49,6 @@ public class BuscarCoordenadas extends AppCompatActivity {
     private SharedPreferences getPreferenceObject() {
         return getApplicationContext().getSharedPreferences(PREF_FILE, 0);
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,8 +68,8 @@ public class BuscarCoordenadas extends AppCompatActivity {
         edNort = findViewById(R.id.edit_northing);
         botonCancel = findViewById(R.id.boton_cancelar_coor);
         Button botonBuscar = findViewById(R.id.boton_buscar_lugar);
-        Button botonBuscarGPS = findViewById(R.id.boton_importar_gps);
-        Button botonBuscarUTM = findViewById(R.id.boton_importar_utm);
+        botonBuscarGPS = findViewById(R.id.boton_importar_gps);
+        botonBuscarUTM = findViewById(R.id.boton_importar_utm);
         radioGPS.setChecked(true);
         edLat.setEnabled(true);
         edLon.setEnabled(true);
@@ -85,9 +83,10 @@ public class BuscarCoordenadas extends AppCompatActivity {
         edLatZone.setBackgroundColor(getResources().getColor(R.color.colorGris));
         edEast.setBackgroundColor(getResources().getColor(R.color.colorGris));
         edNort.setBackgroundColor(getResources().getColor(R.color.colorGris));
+        botonBuscarGPS.setEnabled(true);
+        botonBuscarUTM.setEnabled(false);
 
         radioOpcion.setOnCheckedChangeListener((group, checkedId) -> {
-
             if (radioGPS.isChecked()) {
                 edLat.setEnabled(true);
                 edLon.setEnabled(true);
@@ -101,7 +100,8 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 edLatZone.setBackgroundColor(getResources().getColor(R.color.colorGris));
                 edEast.setBackgroundColor(getResources().getColor(R.color.colorGris));
                 edNort.setBackgroundColor(getResources().getColor(R.color.colorGris));
-
+                botonBuscarGPS.setEnabled(true);
+                botonBuscarUTM.setEnabled(false);
             } else if (radioUTM.isChecked()) {
                 edLat.setEnabled(false);
                 edLon.setEnabled(false);
@@ -115,9 +115,10 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 edLatZone.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 edEast.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 edNort.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                botonBuscarGPS.setEnabled(false);
+                botonBuscarUTM.setEnabled(true);
             }
         });
-
 
         botonCancel.setOnClickListener(view -> {
             Poligono poligonoTemp = new Poligono();
@@ -135,14 +136,13 @@ public class BuscarCoordenadas extends AppCompatActivity {
             openFC(REQUEST_CODE_UTM);
         });
 
-
         botonBuscar.setOnClickListener(view -> {
             Poligono poligonoTemp = new Poligono();
             Estacion e0 = new Estacion();
 
             e0.idEst = "E-0";
 
-            try{
+            try {
                 if (radioGPS.isChecked()) {
                     String cadTemp1 = edLat.getText().toString();
                     String cadTemp2 = edLon.getText().toString();
@@ -150,7 +150,6 @@ public class BuscarCoordenadas extends AppCompatActivity {
                     double lon = Double.parseDouble(cadTemp2);
                     e0.setLat(lat);
                     e0.setLon(lon);
-
                 } else if (radioUTM.isChecked()) {
                     String cadTemp1 = edZone.getText().toString();
                     String cadTemp2 = edLatZone.getText().toString();
@@ -166,16 +165,16 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 intent.putExtra("pol_trab", poligonoTemp);
                 startActivity(intent);
                 finish();
-            }catch (Exception e){
-                Toast.makeText(getApplicationContext(),"Bad coordinates, try again.", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), "Bad coordinates, try again.", Toast.LENGTH_LONG).show();
             }
         });
     }
 
-    public void openFC (int RQ){
+    public void openFC(int RQ) {
         Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("text/*");
-        startActivityForResult(intent,RQ);
+        startActivityForResult(intent, RQ);
     }
 
     private SharedPreferences.Editor getPreferenceEditObjectCoor() {
@@ -200,9 +199,9 @@ public class BuscarCoordenadas extends AppCompatActivity {
         super.onDestroy();
     }
 
-
     @Override
-    public void onBackPressed(){
+    public void onBackPressed() {
+        super.onBackPressed();
         botonCancel.performClick();
     }
 
@@ -211,7 +210,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         try {
-            if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK){
+            if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
                 if (data == null) {
                     return;
                 }
@@ -227,7 +226,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
                     }
                     assert is != null;
                     is.close();
-                } catch (Exception e){
+                } catch (Exception e) {
                     Log.i("Mensaje", e.toString());
                 }
                 String resultado = stringBuilder.toString();
@@ -235,8 +234,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 StringBuilder prueba = new StringBuilder();
                 Vector<Estacion> estaciones1 = new Vector<>();
 
-
-                for (int i = 0; i < lineas.length; i++){
+                for (int i = 0; i < lineas.length; i++) {
                     String[] cad = lineas[i].split(" ");
                     Estacion e = new Estacion();
                     e.setIdEstacion(i);
@@ -252,11 +250,9 @@ public class BuscarCoordenadas extends AppCompatActivity {
                     prueba.append(e.getLat() + " ").append("\n");
                 }
 
-                Toast.makeText(getApplicationContext(),prueba, Toast.LENGTH_LONG).show();
-
+                Toast.makeText(getApplicationContext(), prueba, Toast.LENGTH_LONG).show();
 
                 polTrab.setEstaciones(estaciones1);
-
 
                 //se inicia el intent para cargar la actividad para calcular y presentar resultados
                 Intent intent = new Intent(getApplicationContext(), Ingreso.class);
@@ -266,7 +262,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 finish();
             }
 
-            if (requestCode == REQUEST_CODE_UTM && resultCode == Activity.RESULT_OK){
+            if (requestCode == REQUEST_CODE_UTM && resultCode == Activity.RESULT_OK) {
                 if (data == null) {
                     return;
                 }
@@ -282,7 +278,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
                     }
                     assert is != null;
                     is.close();
-                } catch (Exception e){
+                } catch (Exception e) {
                     Log.i("Mensaje", e.toString());
                 }
                 String resultado = stringBuilder.toString();
@@ -290,8 +286,7 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 StringBuilder prueba = new StringBuilder();
                 Vector<Estacion> estaciones1 = new Vector<>();
 
-
-                for (int i = 0; i < lineas.length; i++){
+                for (int i = 0; i < lineas.length; i++) {
                     String[] cad = lineas[i].split(" ");
                     Estacion e = new Estacion();
                     e.setIdEstacion(i);
@@ -313,7 +308,6 @@ public class BuscarCoordenadas extends AppCompatActivity {
 
                 polTrab.setEstaciones(estaciones1);
 
-
                 //se inicia el intent para cargar la actividad para calcular y presentar resultados
                 Intent intent = new Intent(getApplicationContext(), Ingreso.class);
                 polTrab.poligonoCargado = true;
@@ -322,11 +316,10 @@ public class BuscarCoordenadas extends AppCompatActivity {
                 finish();
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             //"Bad file, try again!"
             String error = e.toString();
-            Toast.makeText(getApplicationContext(),e.toString(), Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
         }
-
     }
 }

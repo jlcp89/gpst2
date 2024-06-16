@@ -209,37 +209,6 @@
                 android:tint="@color/colorPrimary"/>
 
         </RelativeLayout>
-
-
-
-
-
-
-        <!--
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/boton_guardar_marco"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/prueba7" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/boton_cargar_marco"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/boton_guardar_marco"
-            android:layout_gravity="end|bottom"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="5dp"
-            android:src="@drawable/prueba6" />
-         -->
-
-
     </RelativeLayout>
 
 
