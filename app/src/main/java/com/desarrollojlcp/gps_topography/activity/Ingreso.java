@@ -616,7 +616,7 @@ public class Ingreso extends AppCompatActivity implements View.OnClickListener, 
                     }
 
                     coordi = "Lat(GPS)= " + textoLat + " *** Lon(GPS)= " + textoLon+ " **** Alt(m)= " + elevacion ;
-                    String texto = "Lat(GPS)= " + textoLat + " *** Lon(GPS)= " + textoLon+ " *** Alt(m)= " + elevacion + " *** Speed(Km/H)= " +currentSpeed+ " *** Name= "+ direccion + " *** Accuracy(m) = "+ textoPresicion;
+                    String texto = "Lat(GPS)= " + textoLat + ", Lon(GPS)= " + textoLon+ ", Alt(m)= " + elevacion + ", Accuracy(m) = "+ textoPresicion + "\n"+ "Name= "+ direccion ;
                     textoResultados2.setText(texto);
                 }
 

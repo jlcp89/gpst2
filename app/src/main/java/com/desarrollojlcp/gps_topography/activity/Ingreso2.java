@@ -66,6 +66,7 @@ import java.util.Date;
 import java.util.Vector;
 
 
+
 public class Ingreso2 extends AppCompatActivity implements View.OnClickListener {
 
     private static final int REQUEST_INVITE = 101;
@@ -136,7 +137,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_principal, menu);
+        inflater.inflate(R.menu.menu_principal2, menu);
         return true;
     }
 
@@ -145,28 +146,19 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
         int itemId = item.getItemId();
 
         if (itemId == R.id.guardar) {
-            botonGuardar.performClick();
+            if (botonGuardar != null) botonGuardar.performClick();
             return true;
         } else if (itemId == R.id.cargar) {
-            botonCargar.performClick();
+            if (botonCargar != null) botonCargar.performClick();
             return true;
         } else if (itemId == R.id.cambiar_pantalla) {
-            botonRecalcular.performClick();
+            if (botonRecalcular != null) botonRecalcular.performClick();
             return true;
-        } else if (itemId == R.id.poligono) {
-            botonPoligono.performClick();
-            return true;
-        } else if (itemId == R.id.linea) {
-            botonLinea.performClick();
-            return true;
-        } else if (itemId == R.id.puntos) {
-            botonPunto.performClick();
-            return true;
-        } else if (itemId == R.id.capturar_ubicacion_actual) {
-            botonAgregarPunto.performClick();
+        }  else if (itemId == R.id.distancia_azimut) {
+            if (botonAgregarPunto != null) botonAgregarPunto.performClick();
             return true;
         } else if (itemId == R.id.acerca_de) {
-            abirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
+            abrirLink("https://jlcp89.github.io/d3sarrollo/#/gpst");
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -293,7 +285,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
             @Override
             public void onClick(View view) {
                 String url = "https://play.google.com/store/apps/details?id=com.desarrollojlcp.gps_topography_pro";
-                abirLink(url);
+                abrirLink(url);
             }
         });
 
@@ -481,7 +473,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    public void abirLink( String url1) {
+    public void abrirLink( String url1) {
         try{
             String url = url1;
             Intent i = new Intent(Intent.ACTION_VIEW);
@@ -528,6 +520,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
 
     @Override
     public void onBackPressed() {
+        super.onBackPressed();
         try {
             new AlertDialog.Builder(this, R.style.AlertDialogStyle)
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -542,7 +535,7 @@ public class Ingreso2 extends AppCompatActivity implements View.OnClickListener 
                     })
                     .setNegativeButton(getResources().getText(R.string.no), null)
                     .show();
-        } catch (Exception e){
+        } catch (Exception e) {
             Intent intent = new Intent(Intent.ACTION_MAIN);
             intent.addCategory(Intent.CATEGORY_HOME);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

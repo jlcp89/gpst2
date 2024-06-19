@@ -538,56 +538,66 @@ public class Poligono implements Serializable {
 
 
 
-    public void calculoUTM(){
-        Estacion estIniFin = estaciones.elementAt(0);
-        Estacion nuevaIni = new Estacion();
-        String idEstIni = estIniFin.idEst;
-        double lati = estIniFin.lat;
-        double longi = estIniFin.lon;
-        double elevi = estIniFin.alt;
-        nuevaIni.idEst = idEstIni;
-        nuevaIni.lat = lati;
-        nuevaIni.lon = longi;
-        nuevaIni.alt = elevi;
-        nuevaIni.xp = 0;
-        nuevaIni.yp = 0;
-        nuevaIni.xt = 0;
-        nuevaIni.yt = 0;
-        /*if (tipoMedicion.equals("poligono")){
+    public void calculoUTM() {
+        if (estaciones.size() > 0) {
+            Estacion estIniFin = estaciones.elementAt(0);
+            Estacion nuevaIni = new Estacion();
+            String idEstIni = estIniFin.idEst;
+            double lati = estIniFin.lat;
+            double longi = estIniFin.lon;
+            double elevi = estIniFin.alt;
+            nuevaIni.idEst = idEstIni;
+            nuevaIni.lat = lati;
+            nuevaIni.lon = longi;
+            nuevaIni.alt = elevi;
+            nuevaIni.xp = 0;
+            nuevaIni.yp = 0;
+            nuevaIni.xt = 0;
+            nuevaIni.yt = 0;
+        /*if (tipoMedicion.equals("poligono")) {
             this.ingresarEstacion(estIniFin);
         }*/
-        estaciones.setElementAt(nuevaIni,0);
-        for (int i = 0; i < estaciones.size(); i++) {
-            Estacion estacionTemp = estaciones.elementAt(i);
-            CoordinateConversion objetoCoversor = new CoordinateConversion();
-            String utm = objetoCoversor.latLon2UTM(estacionTemp.lat, estacionTemp.lon);
-            estacionTemp.UTM = utm;
-            String[] utmArray = utm.split(" ");
-            estacionTemp.zone = Integer.parseInt(utmArray[0]);
-            estacionTemp.latZone = utmArray[1];
-            estacionTemp.easting = Double.parseDouble(utmArray[2]);
-            estacionTemp.northing = Double.parseDouble(utmArray[3]);
-            if (i >0){
-                Estacion estacionTempAnterior = estaciones.elementAt(i-1);
-                estacionTemp.xp = estacionTemp.easting - estacionTempAnterior.easting;
-                estacionTemp.yp = estacionTemp.northing - estacionTempAnterior.northing;
-                estacionTemp.dist = Math.sqrt(Math.pow(estacionTemp.xp,2)+Math.pow(estacionTemp.yp,2));
-                if ((estacionTemp.xp >= 0)&&(estacionTemp.yp >= 0)){
-                    estacionTemp.valorDecimalGrados = Math.toDegrees(Math.atan(estacionTemp.xp/estacionTemp.yp));
-                }else if ((estacionTemp.xp >= 0)&&(estacionTemp.yp < 0)){
-                    estacionTemp.valorDecimalGrados = 90 + Math.toDegrees(Math.atan(estacionTemp.yp/estacionTemp.xp));
-                }else if ((estacionTemp.xp < 0)&&(estacionTemp.yp < 0)) {
-                    estacionTemp.valorDecimalGrados = 180 + Math.toDegrees(Math.atan(estacionTemp.xp/estacionTemp.yp));
-                }else if ((estacionTemp.xp < 0)&&(estacionTemp.yp >= 0)){
-                    estacionTemp.valorDecimalGrados = 270 + Math.toDegrees(Math.atan(estacionTemp.yp/estacionTemp.xp));
-                }
-                estacionTemp.grado = (int) estacionTemp.valorDecimalGrados;
-                estacionTemp.minuto = (int) ((estacionTemp.valorDecimalGrados - estacionTemp.grado)*60);
-                estacionTemp.segundo = (int) ((estacionTemp.valorDecimalGrados - estacionTemp.grado - (estacionTemp.minuto/60))*3600);
-            }
-            estaciones.setElementAt(estacionTemp,i);
-        }
+            estaciones.setElementAt(nuevaIni, 0);
 
+            for (int i = 0; i < estaciones.size(); i++) {
+                Estacion estacionTemp = estaciones.elementAt(i);
+                CoordinateConversion objetoCoversor = new CoordinateConversion();
+                String utm = objetoCoversor.latLon2UTM(estacionTemp.lat, estacionTemp.lon);
+                estacionTemp.UTM = utm;
+                String[] utmArray = utm.split(" ");
+
+                if (utmArray.length == 4) {
+                    estacionTemp.zone = Integer.parseInt(utmArray[0]);
+                    estacionTemp.latZone = utmArray[1];
+                    estacionTemp.easting = Double.parseDouble(utmArray[2]);
+                    estacionTemp.northing = Double.parseDouble(utmArray[3]);
+                }
+
+                if (i > 0) {
+                    Estacion estacionTempAnterior = estaciones.elementAt(i - 1);
+                    estacionTemp.xp = estacionTemp.easting - estacionTempAnterior.easting;
+                    estacionTemp.yp = estacionTemp.northing - estacionTempAnterior.northing;
+                    estacionTemp.dist = Math.sqrt(Math.pow(estacionTemp.xp, 2) + Math.pow(estacionTemp.yp, 2));
+
+                    if (estacionTemp.xp >= 0 && estacionTemp.yp >= 0) {
+                        estacionTemp.valorDecimalGrados = Math.toDegrees(Math.atan(estacionTemp.xp / estacionTemp.yp));
+                    } else if (estacionTemp.xp >= 0 && estacionTemp.yp < 0) {
+                        estacionTemp.valorDecimalGrados = 90 + Math.toDegrees(Math.atan(estacionTemp.yp / estacionTemp.xp));
+                    } else if (estacionTemp.xp < 0 && estacionTemp.yp < 0) {
+                        estacionTemp.valorDecimalGrados = 180 + Math.toDegrees(Math.atan(estacionTemp.xp / estacionTemp.yp));
+                    } else if (estacionTemp.xp < 0 && estacionTemp.yp >= 0) {
+                        estacionTemp.valorDecimalGrados = 270 + Math.toDegrees(Math.atan(estacionTemp.yp / estacionTemp.xp));
+                    }
+
+                    estacionTemp.grado = (int) estacionTemp.valorDecimalGrados;
+                    estacionTemp.minuto = (int) ((estacionTemp.valorDecimalGrados - estacionTemp.grado) * 60);
+                    estacionTemp.segundo = (int) ((estacionTemp.valorDecimalGrados - estacionTemp.grado - (estacionTemp.minuto / 60.0)) * 3600);
+                }
+                estaciones.setElementAt(estacionTemp, i);
+            }
+        } else {
+            System.out.println("El vector de estaciones está vacío");
+        }
     }
 
     public void calculoUTM2(){

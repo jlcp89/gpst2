@@ -32,7 +32,7 @@
                 android:id="@+id/relativeToolbar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="45dp"
                 android:gravity="center">
                 <include
                     android:id="@+id/toolbar"
@@ -58,7 +58,7 @@
                     android:padding="5dp"
                     android:text="---"
                     android:textColor="@color/azul"
-                    android:textSize="12dp" />
+                    android:textSize="11dp" />
 
                 <TextView
                     android:id="@+id/texto_resultados"

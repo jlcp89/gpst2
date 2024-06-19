@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/iconoMenu"
+        android:icon="@drawable/icono_menu"
+        app:showAsAction="never"
+        android:title="@string/archivo">
+
+        <menu>
+            <item android:id="@+id/guardar"
+                app:showAsAction="never"
+                android:title="@string/guardar"/>
+            <item android:id="@+id/cargar"
+                app:showAsAction="never"
+                android:title="@string/cargar"/>
+        </menu>
+    </item>
+
+    <item android:id="@+id/cambiar_pantalla"
+        app:showAsAction="never"
+        android:title="@string/cambiar_pantalla"/>
+
+
+
+    <item android:id="@+id/distancia_azimut"
+        app:showAsAction="never"
+        android:title="@string/ingreso_de_punto"/>
+
+
+    <item android:id="@+id/acerca_de"
+        app:showAsAction="never"
+        android:title="About"/>
+</menu>
